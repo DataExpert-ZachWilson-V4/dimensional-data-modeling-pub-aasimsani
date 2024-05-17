@@ -63,7 +63,8 @@ INSERT INTO actors_history_scd
 						ROW(quality_class_current_year, is_active_current_year, current_year, current_year)
 						AS ROW(quality_class VARCHAR, is_active BOOLEAN, start_date INTEGER, end_date INTEGER)
 					)
-				] -- When no change has occured and the actor is not in the current 
+				]
+				-- When no change has occured and the actor is not in the current 
 				-- year's data
 				WHEN is_changed IS NULL THEN ARRAY [
 					CAST(
