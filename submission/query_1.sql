@@ -1,7 +1,8 @@
 -- Table as per the requirements of the question
 CREATE TABLE actors (
 	actor VARCHAR,
-	-- Added actor ID since it's specified as a primary key and so I'm persisting that
+	-- Added actor ID since it's specified as a primary key and so I'm persisting this
+	-- key
 	actor_id VARCHAR,
 	films ARRAY(
 		ROW(

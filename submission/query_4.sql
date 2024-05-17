@@ -7,8 +7,8 @@ WITH lagged as (
 			is_active,
 			quality_class,
 			current_year,
-			-- Get the actor's n-1 quality class and is_active to compare with 
-			-- the current year's values
+			-- Get the actor's n-1 quality class and is_active to compare with the
+			-- current year's values
 			LAG (quality_class, 1) OVER (
 				PARTITION BY actor_id
 				ORDER BY current_year ASC

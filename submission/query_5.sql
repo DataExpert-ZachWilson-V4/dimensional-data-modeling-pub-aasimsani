@@ -1,5 +1,5 @@
 INSERT INTO actors_history_scd 
-	-- Assuming I've inserted a few years of data into the actors table.
+	-- Assuming that I've inserted a few years of data into the actors table.
 	-- Get the last year's data
 	WITH last_year_scd AS (
 		SELECT *
