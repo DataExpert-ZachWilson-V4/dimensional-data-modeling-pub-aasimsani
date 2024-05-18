@@ -1,5 +1,6 @@
 -- Backfill the SCD table with the historical data for the actors for one year 
 -- up to the latest year in the actors table
+
 INSERT INTO actors_history_scd 
 WITH lagged as (
 		SELECT actor,

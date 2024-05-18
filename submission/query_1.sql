@@ -1,4 +1,5 @@
 -- Table as per the requirements of the question
+
 CREATE TABLE actors (
 	actor VARCHAR,
 	-- Added actor ID since it's specified as a primary key and so I'm persisting this

@@ -2,6 +2,7 @@
 -- Insertion for the first year of the actors change data capture table knowing that:
 -- Min year 1914
 -- Max year 2021
+
 INSERT INTO actors WITH last_year as (
 		SELECT *
 		FROM actors
