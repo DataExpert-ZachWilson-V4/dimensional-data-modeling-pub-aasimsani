@@ -8,6 +8,7 @@ on:
       - "cicd/**"
     paths:
       - "submission/**"
+  workflow_dispatch:
 
 permissions:
   checks: write
@@ -52,14 +53,19 @@ jobs:
           echo "Any changes: $any_submission_changes"
           echo "any_submission_changes=$any_submission_changes" >> $GITHUB_OUTPUT
 
-          changed_files_push="$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }})"
-          for file in $changed_files_push; do
-            if [[ " $all_changed_submission_files " =~ " $file " ]]; then
-              echo "Valid changes in $file"
-              filter_changed_files_push+=( "$file" )
-            fi
-          done
-
+          if [ "${{ github.event_name }}" == "pull_request_target" ]; then
+            changed_files_push="$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }})"
+            filter_changed_files_push=()
+            for file in $changed_files_push; do
+              if [[ " $all_changed_submission_files " =~ " $file " ]]; then
+                echo "Valid changes in $file"
+                filter_changed_files_push+=( "$file" )
+              fi
+            done
+          else 
+            filter_changed_files_push=()
+          fi
+          
           changed_submission_files_push=$(echo "${filter_changed_files_push[@]}" | xargs)
           echo "Filtered list of files changed in push: '$changed_submission_files_push'"
           echo "changed_submission_files_push=${changed_submission_files_push// /,}" >> $GITHUB_OUTPUT
@@ -106,7 +112,7 @@ jobs:
     if: needs.check_files.outputs.any_submission_changes == 'true'
     env:
       SUBMISSION_DIR: 'submission'
-      CHANGED_FILES: ${{ needs.check_files.outputs.changed_submission_files_push }}
+      CHANGED_FILES: ${{ needs.check_files.outputs.changed_submission_files_push || github.event_name == 'workflow_dispatch' && needs.check_files.outputs.all_changed_submission_files }}
       ASSIGNMENT: ${{ needs.configure_environment.outputs.assignment }}
       ASSIGNMENT_SCHEMA: ${{ needs.configure_environment.outputs.assignment_schema }}
       PR_NUMBER: ${{ github.event.pull_request.number }}
